@@ -19,7 +19,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      {onSameUrlNavigation: 'reload'}
+      {onSameUrlNavigation: 'reload' , useHash: true}
     )
   ],
   exports: [
