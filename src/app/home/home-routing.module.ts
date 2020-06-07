@@ -9,6 +9,11 @@ const homeRoutes: Routes = [
     component: HomeComponent,
     children: [
       {
+        path: '',
+        redirectTo: "search",
+        pathMatch: 'full'
+      },
+      {
         path: 'gainers',
         loadChildren: () => import('./gainers/gainers.module').then(m => m.GainersModule)
       },
