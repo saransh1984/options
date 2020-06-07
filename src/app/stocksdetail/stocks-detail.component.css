@@ -1,0 +1,25 @@
+hr {
+    margin-top: 2px; 
+    margin-bottom: 2px; 
+    border: 0;
+    border-top: 2px solid #eee;
+}
+.example-stretched-tabs {
+    max-width: 100%;
+  }
+
+  .link-form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.42857143;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.label {
+  min-width: 200px !important;
+  display: inline-block !important
+}

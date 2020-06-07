@@ -1,0 +1,360 @@
+<div class="row">
+  <div class="col-sm-8" *ngIf="this.stockDetail !== undefined">
+    <ngb-accordion #acc="ngbAccordion" activeIds="details-panel-one">
+      <ngb-panel title="{{stockDetail.quote.companyName}} ({{stockDetail.quote.symbol}} ) &nbsp; {{stockDetail.quote.change }} &nbsp; {{stockDetail.quote.changePercent
+        | percent}}" id="details-panel-one">
+        <ng-template ngbPanelContent>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Open At
+                </th>
+                <th scope="col">Last Price
+                </th>
+                <th scope="col">Today's High
+                </th>
+                <th scope="col">Today's Low
+                </th>
+                <th scope="col">52 Week Low
+                </th>
+                <th scope="col">52 Week High
+                </th>
+                <th scope="col">Current Volume
+                </th>
+                <th scope="col">Avg Volume
+                </th>
+                <th scope="col">Prev Close
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="isShow">
+
+                <td>{{stockDetail.quote.open}}
+                </td>
+                <td>{{stockDetail.quote.latestPrice}}
+                </td>
+                <td>{{stockDetail.quote.high}}
+                </td>
+                <td>{{stockDetail.quote.low}}
+                </td>
+                <td>{{stockDetail.quote.week52Low}}
+                </td>
+                <td>{{stockDetail.quote.week52High}}
+                </td>
+                <td>{{stockDetail.quote.latestVolume}}
+                </td>
+                <td>{{stockDetail.quote.avgTotalVolume | thousandSuff}}
+                </td>
+                <td>{{stockDetail.quote.previousClose}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <ul ngbNav #nav="ngbNav" class="nav-tabs">
+            <li ngbNavItem>
+              <a ngbNavLink>PUT</a>
+              <ng-template ngbNavContent>
+                <div class="alert alert-success">
+                  <table class="table table-sm">
+                    <thead>
+                      <th scope="col" style="text-align: center;">Date</th>
+                      <th scope="col" style="text-align: center;">High</th>
+                      <th scope="col" style="text-align: center;">Low</th>
+                      <th scope="col" style="text-align: center;">Previous Close</th>
+                      <th scope="col" style="text-align: center;">Difference</th>
+                    </thead>
+                    <tbody>
+                      <tr scope="row" *ngFor="let item of highValues">
+                        <td style="text-align: center;">{{item.date | date}}</td>
+                        <td style="text-align: center;">{{item.highValue}}</td>
+                        <td style="text-align: center;">{{item.lowValue}}</td>
+                        <td style="text-align: center;">{{item.previousClose}}</td>
+                        <td style="text-align: center;">
+                          <a (click)="enterHighValue(item.highDifference)"
+                            style="cursor:pointer">{{item.highDifference | number}}</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row" *ngIf="this.stockDetail !== undefined">
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="5-high-avg-number">5 High Avg</label>
+                      <input type="text" class="form-control" id="5-high-avg-number"
+                        value="{{highDifferenceSummed / 5 | number}}" disabled>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="5-high-avg-best-number">Best Buy</label>
+                      <a class="link-form-control">
+                        {{this.stockDetail.quote.previousClose + highDifferenceSummed / 5 | number}} </a>
+                    </div>
+
+                    <div class="col-sm-2">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="22-high-avg-number">22 High Avg</label>
+                      <input type="text" class="form-control" id="22-high-avg-number"
+                        value="{{high22DaysDifferenceSummed / 22 | number}}" disabled>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="22-high-avg-best-number">Best Buy</label>
+                      <a
+                        class="link-form-control">{{this.stockDetail.quote.previousClose + high22DaysDifferenceSummed / 22 | number}}</a>
+                    </div>
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row" *ngIf="this.stockDetail !== undefined ">
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enter-high-number">Enter</label>
+                      <input type="text" class="form-control" id="enter-high-number" [(ngModel)]="enterValue">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enter-high-best-number">Best Buy</label>
+                      <a class="link-form-control">{{this.stockDetail.quote.previousClose + enterValue*1 | number}}</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterPercent-number">%</label>
+                      <input type="text" class="form-control" id="enterPercent-number" [(ngModel)]="enterPercent">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterPercent-best-number">best Buy</label>
+                      <a
+                        class="link-form-control">{{(this.stockDetail.quote.previousClose * (100 + enterPercent*1))/100 | number}}</a>
+                    </div>
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row" *ngIf="this.stockDetail !== undefined ">
+                    <div class="col-sm-2">
+                      <label for="cc-name">Stock</label>
+                      <input type="text" class="form-control" id="cc-name" (change)="putBlackScholes();"
+                        [(ngModel)]="enterPutStockPrice">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterStrikePrice-number">Strike</label>
+                      <input type="text" class="form-control" id="enterStrikePrice-number" (change)="putBlackScholes();"
+                        [(ngModel)]="enterStrikePrice">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterVoltality-number">Volatility </label>
+                      <input type="text" class="form-control" id="enterVoltality-number" (change)="putBlackScholes();"
+                        [(ngModel)]="enterVoltality">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterInterest-number">Interest</label>
+                      <input type="text" class="form-control" id="enterInterest-number" (change)="putBlackScholes();"
+                        [(ngModel)]="enterInterest">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterPutValue-number">Value Date</label>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="valueDatePut" [(ngModel)]="enterValueDate"
+                          (dateInput)="putBlackScholes();" (dateChange)="putBlackScholes();">
+                        <mat-datepicker-toggle matSuffix [for]="valueDatePut"></mat-datepicker-toggle>
+                        <mat-datepicker #valueDatePut></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterPutTerm-number">Exp Days {{days}}</label>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="enterPutTerm" [(ngModel)]="enterExpDate" [min]="minDate"
+                          (dateInput)="putBlackScholes();" (dateChange)="putBlackScholes();">
+                        <mat-datepicker-toggle matSuffix [for]="enterPutTerm"></mat-datepicker-toggle>
+                        <mat-datepicker #enterPutTerm></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="blackScholesResult-number">Put</label>
+                      <input type="text" class="form-control" id="blackScholesResult-number" disabled
+                        value="{{blackScholesPutResult | number}}">
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li ngbNavItem>
+              <a ngbNavLink>CALL</a>
+              <ng-template ngbNavContent>
+                <div class="alert alert-danger">
+                  <table class="table table-sm">
+                    <thead>
+                      <th scope="col" style="text-align: center;">Date</th>
+                      <th scope="col" style="text-align: center;">High</th>
+                      <th scope="col" style="text-align: center;">Low</th>
+                      <th scope="col" style="text-align: center;">Previous Close</th>
+                      <th scope="col" style="text-align: center;">Difference</th>
+                    </thead>
+                    <tbody>
+                      <tr scope="row" *ngFor="let item of lowValues">
+                        <td style="text-align: center;">{{item.date | date}}</td>
+                        <td style="text-align: center;">{{item.highValue}}</td>
+                        <td style="text-align: center;">{{item.lowValue}}</td>
+                        <td style="text-align: center;">{{item.previousClose}}</td>
+                        <td style="text-align: center;">
+                          <a (click)="enterLowValue(item.lowDifference)">{{item.lowDifference | number}}</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="row" *ngIf="this.stockDetail !== undefined ">
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="5-low-avg-number">5 Low Avg</label>
+                      <input type="text" class="form-control" id="5-low-avg-number"
+                        value="{{(lowDifferenceSummed / 5)*(-1) | number}}" disabled>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="5-low-avg-best-number">Best Buy</label>
+                      <a class="link-form-control"
+                        (click)="modifyCallStockPrice(this.stockDetail.quote.previousClose + lowDifferenceSummed / 5)">
+                        {{this.stockDetail.quote.previousClose + lowDifferenceSummed / 5 | number}}</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <label></label>
+                    </div>
+                    <!--</div>
+                        <hr>
+                        <div class="row" *ngIf="this.stockDetail !== undefined ">-->
+                    <div class="col-md-2 mb-1">
+                      <label for="22-low-avg-number">22 Low Avg</label>
+                      <input type="text" class="form-control" id="22-low-avg-number"
+                        value="{{(low22DaysDifferenceSummed / 22)*(-1) | number}}" disabled>
+                    </div>
+                    <div class="col-md-2 mb-1">
+                      <label for="22-low-avg-best-number">Best Buy</label>
+                      <a class="link-form-control"
+                        (click)="modifyCallStockPrice(this.stockDetail.quote.previousClose + low22DaysDifferenceSummed / 22)">{{this.stockDetail.quote.previousClose + low22DaysDifferenceSummed / 22 | number}}</a>
+                    </div>
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row" *ngIf="this.stockDetail !== undefined ">
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enter-low-number">Amount</label>
+                      <input type="text" class="form-control" id="enter-low-number" [(ngModel)]="enterNegValue">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enter-low-best-number">Best Buy</label>
+                      <a class="link-form-control"
+                        (click)="modifyCallStockPrice(this.stockDetail.quote.previousClose - enterNegValue*1)">
+                        {{this.stockDetail.quote.previousClose - enterNegValue*1 | number}}</a>
+                    </div>
+                    <div class="col-sm-2">
+                      <label></label>
+                    </div>
+                    <!--</div>
+                        <hr>
+                        <div class="row" *ngIf="this.stockDetail !== undefined ">-->
+                    <div class="col-sm-2">
+                      <label for="neg-perc-number">%</label>
+                      <input type="text" class="form-control" id="neg-perc-number" [(ngModel)]="enterNegPercent">
+                    </div>
+                    <div class="col-md-2">
+                      <label for="neg-perc-best-number">Best Buy</label>
+                      <a class="link-form-control"
+                        (click)="modifyCallStockPrice((this.stockDetail.quote.previousClose * (100 - enterNegPercent*1))/100)">{{(this.stockDetail.quote.previousClose * (100 - enterNegPercent*1))/100 | number}}</a>
+                    </div>
+                    <div class="col-sm-1">
+                      <label></label>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row" *ngIf="this.stockDetail !== undefined ">
+                    <div class="col-sm-2">
+                      <label for="last-price-number">Stock</label>
+                      <input type="text" class="form-control" id="last-price-number" (change)="callBlackScholes();"
+                        [(ngModel)]="enterCallStockPrice">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterCallStrikePrice-number">Strike</label>
+                      <input type="text" class="form-control" id="enterCallStrikePrice-number"
+                        (change)="callBlackScholes();" [(ngModel)]="enterCallStrikePrice">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterCallVoltality-number">Volatility </label>
+                      <input type="text" class="form-control" id="enterCallVoltality-number"
+                        (change)="callBlackScholes();" [(ngModel)]="enterCallVoltality">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterCallInterest-number">Interest</label>
+                      <input type="text" class="form-control" id="enterCallInterest-number"
+                        (change)="callBlackScholes();" [(ngModel)]="enterCallInterest">
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterCallValue-number">Value Date</label>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="valueDateCall" [(ngModel)]="enterValueDate"
+                          (dateInput)="callBlackScholes();" (dateChange)="callBlackScholes();">
+                        <mat-datepicker-toggle matSuffix [for]="valueDateCall"></mat-datepicker-toggle>
+                        <mat-datepicker #valueDateCall></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="enterCallTerm-number">Exp Days {{days}}</label>
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="enterCallTerm" [(ngModel)]="enterExpDate" [min]="minDate"
+                          (dateInput)="callBlackScholes();" (dateChange)="callBlackScholes();">
+                        <mat-datepicker-toggle matSuffix [for]="enterCallTerm"></mat-datepicker-toggle>
+                        <mat-datepicker #enterCallTerm></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                      <label for="blackScholesCallResult-number">Call</label>
+                      <input type="text" class="form-control" id="blackScholesCallResult-number" disabled
+                        value="{{blackScholesCallResult | number}}">
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+  <div  class="col-sm-4" *ngIf="this.stockDetail !== undefined">
+    <ngb-accordion #acc="ngbAccordion" activeIds="news-panel-one" >
+      <ngb-panel title="News" id="news-panel-one">
+        <ng-template ngbPanelContent>
+          <table class="table table-striped">
+           
+            <tbody>
+            <tr *ngFor="let news of stockDetail.news">
+              <td>
+                <a class="text-info" href="{{news.url}}" target="_blank"> {{news.headline}}
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          
+        </ng-template>
+      </ngb-panel>
+    
+    </ngb-accordion>
+  </div>

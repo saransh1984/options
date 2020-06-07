@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill">
+    <mat-label>Stock Symbol</mat-label>
+    <input matInput placeholder="Stock Symbol" [formControl]="stocksCtrl" #symbol>
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+</mat-form-field>
+<button mat-raised-button matTooltip="Stock Details" aria-label="Button that displays a tooltip in various positions"
+    (click)="fetchDetails(symbol.value,'GAINER')">
+    Details
+</button>

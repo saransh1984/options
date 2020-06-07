@@ -1,0 +1,90 @@
+
+        <div class="panel-body">
+            <div class="list-group">
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="symbol">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol </th>
+                                <td mat-cell *matCellDef="let row" matTooltip={{row.sector}}
+                                    matTooltipClass="example-tooltip-red"> {{row.symbol}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="open">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Open </th>
+                                <td mat-cell *matCellDef="let row"> {{row.open}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="high">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> High </th>
+                                <td mat-cell *matCellDef="let row"> {{row.high}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="low">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Low </th>
+                                <td mat-cell *matCellDef="let row"> {{row.low}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="latestPrice">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Latest Price </th>
+                                <td mat-cell *matCellDef="let row"> {{row.latestPrice}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="latestVolume">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Latest Volume </th>
+                                <td mat-cell *matCellDef="let row"> {{row.latestVolume | thousandSuff}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="iexRealtimePrice">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Realtime Price </th>
+                                <td mat-cell *matCellDef="let row"> {{row.iexRealtimePrice}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="previousClose">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Previous Close </th>
+                                <td mat-cell *matCellDef="let row"> {{row.previousClose}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="change">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Change </th>
+                                <td mat-cell *matCellDef="let row"> {{row.change}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="changePercent">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </th>
+                                <td mat-cell *matCellDef="let row"> {{row.changePercent | percent}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="avgTotalVolume">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Avg Total Volume </th>
+                                <td mat-cell *matCellDef="let row"> {{row.avgTotalVolume | thousandSuff}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="marketCap">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Market Cap </th>
+                                <td mat-cell *matCellDef="let row"> {{row.marketCap | thousandSuff}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="peRatio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ratio </th>
+                                <td mat-cell *matCellDef="let row"> {{row.peRatio}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="week52High">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> 52 Week High </th>
+                                <td mat-cell *matCellDef="let row"> {{row.week52High}} </td>
+                            </ng-container>
+                             <ng-container matColumnDef="week52Low">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> 52 Week Low </th>
+                                <td mat-cell *matCellDef="let row"> {{row.week52Low}} </td>
+                            </ng-container>
+                           <!--   <ng-container matColumnDef="ytdChange">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Ytd Change</th>
+                                <td mat-cell *matCellDef="let row"> {{row.ytdChange}} </td>
+                            </ng-container> -->
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" >
+
+                            </tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                </div>
+            </div>
+
+        </div>
+
+<!-- <div *ngIf="showDetails">
+     <app-stocks-detail> </app-stocks-detail>
+</div> -->
+
