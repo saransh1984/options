@@ -9,6 +9,7 @@ import { AppRoutingModule }  from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ThousandSuffixesPipe } from './thousand-suff.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 
@@ -32,7 +33,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule
 
   ],
-  providers: [],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

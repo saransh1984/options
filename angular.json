@@ -133,15 +133,6 @@
   },
   "defaultProject": "stocks-options",
   "cli": {
-    "analytics": "6cfef1a4-5b79-463d-be7a-457df7444c2e"
-  },
-  "deploy": {
-    "builder": "@jefiozie/ngx-aws-deploy:deploy",
-    "options": {
-      "region": "US East (Ohio)",
-      "bucket": "arn:aws:s3:::optionscallput",
-      "secretAccessKey": "5KqFfThlVjgSqypaC00pwQBTCaAkT35c6zx0Aqh+",
-      "accessKeyId": "AKIAWQ7V3E3VW7GN55HL"
-    }
+    "analytics": "0189e787-aff4-4cc5-8d1b-a7d00dbcb622"
   }
 }
